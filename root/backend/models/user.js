@@ -19,7 +19,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    /*createdOn: {
+    createdOn: {
         type: String,
         required: true
     },
@@ -55,7 +55,7 @@ const userSchema = new Schema({
         type: Object,
         required: true
     },
-    staffLeave: Object*/
+    staffLeave: Object
 })
 
 module.exports = mongoose.model('User', userSchema)

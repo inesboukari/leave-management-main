@@ -15,7 +15,7 @@ function LoginPage() {
         const [userPassword, setUserPassword] = useState("")
         const [loginBtnLoading, setLoginBtnLoading] = useState("")
 
-        const url = `localhost:3001/login`
+        const url = `http://localhost:3001/login`
         
         const validateFormAndSignIn = (e) => {
             setLoginBtnLoading("loading")
@@ -53,8 +53,8 @@ function LoginPage() {
                 .catch(err => {
                     console.log(err)
                     setLoginBtnLoading("")
-                    if(err.response.status === 400) toast.error("email is not registered!")
-                    if(err.response.status === 401) toast.error("Incorrect email or password")
+                    if(err?.response?.status === 400) toast.error("email is not registered!")
+                    if(err?.response?.status === 401) toast.error("Incorrect email or password")
                 })
         }
         
@@ -66,7 +66,7 @@ function LoginPage() {
                     <p className='text-slate-600 text-5xl'>LEAVE <span className="text-sky-500">PLANS</span> </p>
                     <p className='text-slate-600 text-4xl'>休 <span className="text-sky-500">划</span> </p>
                 </div>
-                <form className="grid h-58 card rounded-box place-items-center my-1" onSubmit="validateFormAndSignIn(e)">
+                <form className="grid h-58 card rounded-box place-items-center my-1" onSubmit={validateFormAndSignIn}>
                     <div className="form-control w-full max-w-xs">
                         <input type="text" placeholder="Email 邮箱" className="input input-bordered w-full max-w-xs" onChange={(event) => setUserEmail(event.target.value)}/>
                         <input type="password" placeholder="Password 密码" className="input input-bordered w-full max-w-xs my-4" onChange={(event) => setUserPassword(event.target.value)}/>

@@ -18,7 +18,7 @@ function ApplyLeavePage() {
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
 
-    const [leaveOptions] = useState(currentUser.leave.map(leave => leave.name))
+    const [leaveOptions] = useState(currentUser?.leave?.map(leave => leave.name))
     const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
@@ -31,16 +31,14 @@ function ApplyLeavePage() {
     const [numOfDaysApplied, setNumOfDaysApplied] = useState()
     const [currentUserAppliedDates] = useState(
         // filters non-cancelled, non-rejected leave dates already applied by user
-        currentUser.leaveHistory
-            .filter(entry => entry.status === "pending" || entry.status === "approved")
-            .map(entry => +(entry.startDateUnix)))
+        currentUser.leaveHistory?.filter(entry => entry.status === "pending" || entry.status === "approved")?.map(entry => +(entry.startDateUnix)))
     const [applyBtnLoading, setApplyBtnLoading] = useState("")
 
-    const userSelectedLeave = currentUser.leave.find((leaveType) => leaveType.name === currentLeaveSelection)
+    const userSelectedLeave = currentUser?.leave?.find((leaveType) => leaveType.name === currentLeaveSelection)
     console.log("userSelectedLeave: ", userSelectedLeave)
 
     const numOfSelectedLeave = // use .entitlemen if leave type is carry forward, else, fetch from leaveEntitlement
-        (userSelectedLeave.name === `Annual Leave 年额带过 (${currentYear-1})`) ? userSelectedLeave.entitlement : currentLeaveEntitlement.find(leave => leave.name === userSelectedLeave.name).entitlement - userSelectedLeave.pending - userSelectedLeave.used // refers to how many days a user is entitled for selected leave type
+        (userSelectedLeave?.name === `Annual Leave 年额带过 (${currentYear-1})`) ? userSelectedLeave?.entitlement : currentLeaveEntitlement.find(leave => leave.name === userSelectedLeave?.name)?.entitlement - userSelectedLeave?.pending - userSelectedLeave?.used // refers to how many days a user is entitled for selected leave type
     
     const validateAndSubmitLeaveApplication = (e) => {
         const url = `${process.env.REACT_APP_BACKENDURL}/user/applyLeave`

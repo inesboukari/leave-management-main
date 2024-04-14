@@ -9,7 +9,7 @@ module.exports = {
 
     getIO: () => {
         if(!io){
-            return res.status(400).send("socket.io not initialized")
+            return res?.status(400).send("socket.io not initialized")
         }
         return io
     }
