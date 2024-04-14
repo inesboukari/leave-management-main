@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const colors = require('colors')
 const cors = require('cors')/*un middleware pour Express qui permet de gérer les requêtes HTTP entre différentes origines (domaines)*/
@@ -21,6 +21,11 @@ require('dotenv').config()
 const app = express();
 /*session=collection stocké dans bd*/
 
+app.use(session({
+  secret: 'leave',
+  resave: false,
+  saveUninitialized: false
+}));
 
 const adminRoutes = require('./routes/admin')
 const userRoutes = require('./routes/user')
@@ -35,26 +40,26 @@ app.use(multer().single('upload'))
 
 /*Session Middleware:*/
 
-app.use(express.urlencoded({extended: true})) /*Ce middleware est utilisé pour analyser les corps de requête encodés en URL*/
+app.use(express.urlencoded({ extended: true })) /*Ce middleware est utilisé pour analyser les corps de requête encodés en URL*/
 app.use(express.json()) /*Ce middleware est utilisé pour analyser les corps de requête JSON.*/
 
-app.use('/admin',adminRoutes)
-app.use('/user',userRoutes)
+app.use('/admin', adminRoutes)
+app.use('/user', userRoutes)
 app.use(authRoutes)
 
 /*connection au bd*/
-    
-async function main(){
 
+async function main() {
+ 
 
-await mongoose.connect('mongodb://localhost:27017/tarajina');
-console.log('Database connected');
-app.listen(3001, () =>{
+  await mongoose.connect('mongodb://localhost:27017/leave_management');
+  console.log('Database connected');
+  app.listen(3001, () => {
     console.log("server is runing on port 3001")
-})
+  })
 
 }
 /*app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   })*/
-main().catch((err)=>console.log(err));
+main().catch((err) => console.log(err));

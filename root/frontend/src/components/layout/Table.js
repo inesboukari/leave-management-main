@@ -9,6 +9,7 @@ import Loading from '../Loading'
 function Table({headerType}) {/*Cela montre que ce composant de table utilise
  des données et des fonctions fournies par le contexte principal pour gérer l'état local et afficher les données*/
     const {activeTab, currentUser, currentLeaveEntitlement, fetchCurrentUserInfo, setCurrentEditUser, userList} = useMainContext()
+    console.log(currentUser);
     const [isLoading, setIsLoading] = useState(false)
     const [userAddedLeaveType, setUserAddedLeaveType] = useState(currentLeaveEntitlement.filter(record => (record.addedByUser ? record.addedByUser.length > 0 : 0)))
     const currentDate = new Date()
@@ -308,7 +309,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                     /* fetch from global entitlement collection */
                     return currentLeaveEntitlement.find(record => record.name === leaveName).entitlement
                 }
-                return currentUserLeave.map((leave,index) => 
+                return currentUserLeave?.map((leave,index) => 
                     <tr key={index}>
                         <td>{leave.name}</td>
                         <td>{(leave.name === `Annual Leave 年额带过 (${currentYear-1})`) ? leave.entitlement : fetchLeaveEntitlement(leave.name)}</td>
@@ -318,7 +319,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                         <td><InfoBubble info={leave.note}/></td>
                     </tr>)
             case "request":
-                return (currentUser.leaveHistory.filter(entry => entry.startDateUnix > currentDateUnix).length) ?
+                return (currentUser?.leaveHistory?.filter(entry => entry.startDateUnix > currentDateUnix).length) ?
                 currentUser.leaveHistory
                     .filter(entry => entry.startDateUnix > currentDateUnix)
                     .sort((a,b)=> a.startDateUnix - b.startDateUnix)
@@ -349,7 +350,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                         )
                     : <td>No upcoming leave request / 暂时无请求</td>
             case "history":
-                return (currentUser.leaveHistory.filter(entry => entry.startDateUnix <= currentDateUnix).length) ?
+                return (currentUser?.leaveHistory?.filter(entry => entry.startDateUnix <= currentDateUnix).length) ?
                     currentUser.leaveHistory
                         .filter(entry => entry.startDateUnix <= currentDateUnix)
                         .sort((a,b)=> b.startDateUnix - a.startDateUnix)
