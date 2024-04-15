@@ -46,6 +46,15 @@ exports.postCreateUser = (req, res, next) => {
                     ]
 
                     LeaveEntitlement.find({}, (err, records) => {
+
+                        if (err) {
+                            return console.log("err adding leave entitlement to new user: ", err);
+                        }
+
+                        if (!records || records.length === 0) {
+                            return console.log("No leave entitlement records found");
+                        }
+                        
                         console.log("records: ", records)
                         const leaveRecords = records[0].leaveEntitlement
 
@@ -115,7 +124,7 @@ exports.postCreateUser = (req, res, next) => {
                         //             return res.status(488).send("sendgrid error: ", error)
                         //         })
                         // })
-                        return res.status(200).send(user)
+                        return res?.status(200).send(user)
                     })
 
                 })
