@@ -11,19 +11,19 @@ function Homepage() {
 
     const activeTabSelection = (activeTab) => {
         switch (activeTab) {
-            case "Home 主页":
+            case "Home ":
                 return (<>
-                    <h1 className='text-xl my-6 text-center'>Leave Request 休假请求</h1>
+                    <h1 className='text-xl my-6 text-center'>Leave Request </h1>
                     <Table headerType="request"/>
                 </>)
-            case "Entitlement 年额":
+            case "Entitlement":
                 return (<>
-                    <h1 className='text-xl my-6 text-center'>Leave Entitlement 休假数</h1>
+                    <h1 className='text-xl my-6 text-center'>Leave Entitlement </h1>
                     <Table headerType="entitlement"/>
                 </>)
-            case "History 历史":
+            case "History ":
                 return (<>
-                    <h1 className='text-xl my-6 text-center'>Leave History 休假历史</h1>
+                    <h1 className='text-xl my-6 text-center'>Leave History </h1>
                     <Table headerType="history"/>
                 </>)
             default:
@@ -38,8 +38,8 @@ function Homepage() {
         {/*s'il est administrateur (admin), le bouton est désactivé  */}
             <Tab/>  
             {currentUser.isAdmin === "admin" ? 
-                <button className='btn btn-disabled rounded-md mt-6 mr-6 px-6 text-lg'>Apply Leave 申请休假</button>
-            :   <Link to="/apply-leave"><button className='btn bg-black rounded-md mt-6 mr-6 px-6 text-lg'>Apply Leave 申请休假</button></Link>
+                <button className='btn btn-disabled rounded-md mt-6 mr-6 px-6 text-lg'>Apply Leave </button>
+            :   <Link to="/apply-leave"><button className='btn bg-black rounded-md mt-6 mr-6 px-6 text-lg'>Apply Leave </button></Link>
             }
         </div>
         {/* apply leave un bouton pour demander un congé */}

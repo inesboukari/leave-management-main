@@ -17,7 +17,7 @@ function Navbar() {/* est une barre de navigation qui fournit différentes fonct
             .then((resp)=>{
                 setIsLoading(true)
                 if(resp.status === 200) {
-                    toast.success("Log out successful / 已登出")
+                    toast.success("Log out successful ")
                     setIsLoading(false)
                     sessionStorage.removeItem('leaveMgtToken')
                     setCurrentUser(null)
@@ -25,7 +25,7 @@ function Navbar() {/* est une barre de navigation qui fournit différentes fonct
                 }
                 else {
                     setIsLoading(false)
-                    toast.error("failed to log out / 登出失败")
+                    toast.error("failed to log out ")
                 }
             })
             .catch(err => {
@@ -35,26 +35,26 @@ function Navbar() {/* est une barre de navigation qui fournit différentes fonct
     }
 
     const clearState = () => {
-        setCurrentLeaveSelection("Annual Leave 年假")
+        setCurrentLeaveSelection("Annual Leave ")
     }
     return (
         <div className='flex justify-between navbar bg-slate-800'>
                 <div className="navbar-start">
                     {
-                        <button className="btn btn-ghost normal-case text-xl" onClick={() => setActiveTab("Home 主页")}>
+                        <button className="btn btn-ghost normal-case text-xl " onClick={() => setActiveTab("Home ")}>
                             {/* icon only links to homepage if user is logged in */}
-                            {!currentUser && <div className='text-slate-50'>LEAVE <span className="text-sky-400">PLANS</span> </div>}
-                            {currentUser && <Link onClick={clearState} to="" className='text-slate-50'>LEAVE <span className="text-sky-400">PLANS</span> </Link>}
+                            {!currentUser && <div className='text-slate-50 p'>LEAVE <span className="text-sky-400">PLANS</span> </div>}
+                            {currentUser && <Link onClick={clearState} to="" className='text-slate-50 p' >LEAVE <span className="text-sky-400">PLANS</span> </Link>}
                         </button>
                     }
 
                 </div>
                 <div className="navbar-end hidden lg:flex mr-3">
                     {/* if user is signed in, sign up and sign in page will be hidden */}
-                    {/*Lorsqu'un utilisateur est connecté, les liens "Profile" et "Team" sont affichés à la place de "Login".*/}
+                    {/*Lorsqu'un utilisateur est connecté, les liens "Profile" est affichés à la place de "Login".*/}
                     {!currentUser && <Link to="/login" className="text-lg mx-2 text-white cursor-pointer hover:text-gray-400">Login</Link>}
                     {currentUser && <Link to="/profile" className="text-lg mx-2 text-white cursor-pointer hover:text-gray-400">Profile</Link>}
-                    {currentUser && <Link to="/team" className="text-lg mx-2 text-white cursor-pointer hover:text-gray-400">Team</Link>}
+                
                     
                     {/* manage user is only visible by admin user */}
                     {/*: Si l'utilisateur connecté est un administrateur, un menu déroulant "Admin" est affiché avec plusieurs options */}
@@ -69,15 +69,17 @@ function Navbar() {/* est une barre de navigation qui fournit différentes fonct
                                     onClick={() => setActiveTab("Pending")}
                                     >Approve Leave</Link>
                             </li>
+    
+                            <li className='text-slate-800'>
+                                <Link 
+                                    to="/approve-leave" 
+                                    className="text-sm mx-2 cursor-pointer hover:text-gray-500"
+                                    onClick={() => setActiveTab("Pending")}
+                                    >Approve Attestation</Link>
+                                    </li>
                             <li className='text-slate-800'>
                                 <Link to="/user-management" className="text-sm mx-2 cursor-pointer hover:text-gray-500">Manage User</Link>
                             </li> 
-                            <li className='text-slate-800'>
-                                <Link to="/dashboard" className="text-sm mx-2 cursor-pointer hover:text-gray-500">Dashboard</Link>
-                            </li>
-                            <li className='text-slate-800'>
-                                <Link to="/set-work-day" className="text-sm mx-2 cursor-pointer hover:text-gray-500">Set Work Days</Link>
-                            </li>
                             <li className='text-slate-800'>
                                 <Link to="/set-leave-entitlement" className="text-sm mx-2 cursor-pointer hover:text-gray-500">Set Entitlement</Link>
                             </li>
@@ -87,6 +89,10 @@ function Navbar() {/* est une barre de navigation qui fournit différentes fonct
                             <li className='text-slate-800'>
                                 <Link to="/delete-leave-type" className="text-sm mx-2 cursor-pointer hover:text-gray-500">Delete Leave Type</Link>
                             </li>
+                            <li className='text-slate-800'>
+                                <Link to="/Attestation-form" className="text-sm mx-2 cursor-pointer hover:text-gray-500">Attestation form</Link>
+                            </li>
+                    
                         </ul>
                     </div>)
                     }

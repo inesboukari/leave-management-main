@@ -6,11 +6,14 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
 
+
 function CreateUserPage() {
     const {fetchUserList, isAdmin, validateEmail} = useMainContext()
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [grade, setGrade] = useState()
+    const [matricule, setMatricule] = useState()
     const [confirmPassword, setConfirmPassword] = useState()
     const [reportingEmail, setReportingEmail] = useState()
     const [coveringEmail, setCoveringEmail] = useState()
@@ -32,6 +35,10 @@ function CreateUserPage() {
             return toast.error("Passwords don't match!")
         }
         
+        
+        
+
+
         if(isAdmin === "admin"){
             // admin acc creation check
             if(
@@ -50,6 +57,8 @@ function CreateUserPage() {
             if(
                 name === undefined || name.length === 0 ||
                 email === undefined || email.length === 0 ||
+                grade === undefined || grade.length === 0 ||
+                matricule=== undefined || matricule.length === 0 ||
                 password === undefined || password.length === 0 ||
                 confirmPassword === undefined || confirmPassword.length === 0 ||
                 reportingEmail === undefined || reportingEmail.length === 0 ||
@@ -112,6 +121,8 @@ function CreateUserPage() {
             isAdmin: isAdmin,
             email: email,
             password: password,
+            grade: grade,
+            matricule:matricule,
             createdOn: new Date(),
             lastUpdatedOn: new Date(),
             reportingEmail: (isAdmin === "admin") ? "-" : reportingEmail,
@@ -122,36 +133,42 @@ function CreateUserPage() {
     }
     return (
         <div>
-            <div className='grid place-items-center mt-8 text-slate-600 text-3xl'>Create User</div>
-
+            <div className="bg-rose-100 h-screen">
+            <div className='grid place-items-center mt-8 text-slate-600 text-3xl  z'>Create User</div>
+           
             <div className="grid place-items-center">
                 <form className="form-control w-full max-w-xs" onSubmit={sendFormData}>
-                    <label className="label text-sm">Account Type</label>
-                    <RadioSelection radioType="accountTypeRadio" id="accountType"/>
                     <label className="label text-sm">Name</label>
                     <input type="text" className="input input-bordered w-full max-w-xs" name="name" onChange={(e) => setName(e.target.value)} value={name}/>
-                    <label className="label text-sm">Email 邮箱</label>
+                    <label className="label text-sm">Email </label>
                     <input type="text" className="input input-bordered w-full max-w-xs" name="password" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                    <label className="label text-sm">Password 密码</label>
+                    <label className="label text-sm">Password </label>
                     <input type="password" className="input input-bordered w-full max-w-xs" name="confirmPassword" onChange={(e) => setPassword(e.target.value)} value={password}/>
-                    <label className="label text-sm">Confirm Password 二次确认密码</label>
+                    <label className="label text-sm">Confirm Password </label>
                     <input type="password" className="input input-bordered w-full max-w-xs" name="email" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}/>
-
-                    {isAdmin === "admin" ?
+                    <label className="label text-sm">Grade </label>
+                    <input type="text" className="input input-bordered w-full max-w-xs" name="grade" onChange={(e) => setGrade(e.target.value)} value={grade}/>
+                    <label className="label text-sm">matricule </label>
+                    <input type="text" className="input input-bordered w-full max-w-xs" name="matricule" onChange={(e) => setMatricule(e.target.value)} value={matricule}/>
+                    
+                    
+                    
+                     {isAdmin === "admin" ?
                         <>
                         </> 
                         :
                         <>
-                            <label className="label text-sm">Reporting Officer Email 主管邮箱</label>{/*Adresse e-mail du responsable de rapport" */}
+                            <label className="label text-sm">Reporting Officer Email </label>{/*Adresse e-mail du responsable de rapport" */}
                             <input type="text" className="input input-bordered w-full max-w-xs" onChange={(e) => setReportingEmail(e.target.value)} value={reportingEmail}/>
-                            <label className="label text-sm">Covering Officer Email 代办邮箱</label>{/*t à l'adresse e-mail d'un officier désigné pour couvrir ou remplacer temporairement un autre officier.*/}
+                            <label className="label text-sm">Covering Officer Email </label>{/*t à l'adresse e-mail d'un officier désigné pour couvrir ou remplacer temporairement un autre officier.*/}
                             <input type="text" className="input input-bordered w-full max-w-xs" name="" onChange={(e) => setCoveringEmail(e.target.value)} value={coveringEmail}/>
                         </>
                     }
                     
-                    <button type="submit" className={`btn mt-8 rounded-sm ${createUserBtnLoading}`}>Create User</button>
+                    <button type="submit" className={`btn bg-rose-200 ${createUserBtnLoading} t`}>Create User</button>
                 </form>
                 {isLoading && <Loading/>}
+            </div>
             </div>
         </div>
         )

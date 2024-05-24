@@ -35,19 +35,17 @@ const updateUserEntitlement = () => {
                 console.log("carryForward: ", carryForward)
 
                 const chengduLrsLeaveScheme = [
-                    new Leave({name: "Annual Leave 年假", type:"annual", entitlement: 15, pending: 0, used: 0, rollover: true, year: date.getFullYear(), note: "NA / 无"}),
-                    new Leave({name: `Annual Leave 年额带过 (${currentYear-1})`, type:"prevYearAnnual", entitlement: carryForward, pending: 0, used: 0, rollover: true, year: date.getFullYear(), note: "NA / 无"}),
-                    new Leave({name: "Compassionate Leave 丧假", type:"compassionate", entitlement: 3, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Death of spouse, parents, children, parents-in-law: 3 days\n own/spouse's grandparents, own siblings: 1 day \n 配偶、父母、子女、岳父母死亡: 3天\n 自己/配偶的祖父母、自己的兄弟姐妹: 1天"}),
-                    new Leave({name: "Medical leave 病假", type:"medical", entitlement: 30, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "NA / 无"}),
-                    new Leave({name: "Hospitalisation leave 住院假", type:"hospitalisation", entitlement: 365, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "As prescribed by doctor\n按医生规定"}),
-                    new Leave({name: "Marriage Leave 婚假", type:"marriage", entitlement: 3, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "For newly married staff\n新婚"}),
-                    new Leave({name: "Maternity leave 产假", type:"maternity", entitlement: 158, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "15 days have to be taken before delivery\n分娩前必须服用15天"}),
-                    new Leave({name: "Miscarriage Leave 流产假", type:"miscarriage", entitlement: 45, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Within 3 months of pregnancy: 30 days\nBetween 3 to 7 months: 45 days\n after 7 months: 15 days\n3个月内流产: 30天\n3至7个月内流产: 45天\n 7个月后流产: 15天"}),
-                    new Leave({name: "Natal Leave 受精相关假", type:"natal", entitlement: 365, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "As prescribed by doctor\n按医生规定"}),
-                    new Leave({name: "Paternity Leave 陪产假", type:"paternity", entitlement: 20, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Male staff has to take leave within first week of child's birth\n 员工(男)必须在孩子出生第一周内用"}),
-                    new Leave({name: "Unpaid Leave 无薪假", type:"unpaid", entitlement: 365, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "NA / 无"}),
-                    new Leave({name: "Childcare Leave 育儿假", type:"childcare", entitlement: 10, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Only for staff with kids 3 years old and below\n仅限带 3 岁及以下儿童的员工"}),
-                    new Leave({name: "Women's Day 三、八妇女节", type:"womenDay", entitlement: 0.5, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Can be taken on or after International Women's Day\n可在国际妇女节当天或之后休假"}),
+                    new Leave({name: "Annual Leave ", type:"annual", entitlement: 30, pending: 0, used: 0, rollover: true, year: date.getFullYear(), note: "NA / "}),
+                    new Leave({name: `Annual Leave  (${currentYear-1})`, type:"prevYearAnnual", entitlement: carryForward, pending: 0, used: 0, rollover: true, year: date.getFullYear(), note: "NA / "}),
+                    new Leave({name: "Compassionate Leave ", type:"compassionate", entitlement: 10, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Death of spouse, parents, children, parents-in-law: 3 days\n own/spouse's grandparents, own siblings: 1 day \n "}),
+                    new Leave({name: "Medical leave ", type:"medical", entitlement: 20, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "NA / 无"}),
+                    new Leave({name: "Hospitalisation leave ", type:"hospitalisation", entitlement: 60, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "As prescribed by doctor\n"}),
+                    new Leave({name: "Marriage Leave ", type:"marriage", entitlement: 15, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "For newly married staff\n"}),
+                    new Leave({name: "Maternity leave ", type:"maternity", entitlement: 90, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "15 days have to be taken before delivery\n 15"}),
+                    new Leave({name: "Miscarriage Leave ", type:"miscarriage", entitlement: 3, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Within 3 months of pregnancy: 30 days\nBetween 3 to 7 months: 45 days\n after 7 months: 15 days\n3: 30\n3: 45\n 7: 15"}),
+                    new Leave({name: "Paternity Leave ", type:"paternity", entitlement: 30, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "Male staff has to take leave within first week of child's birth\n "}),
+                    new Leave({name: "Unpaid Leave ", type:"unpaid", entitlement: 30, pending: 0, used: 0, rollover: false, year: date.getFullYear(), note: "NA / "}),
+                    
                 ]
 
                 console.log("carry forward: ", carryForward)

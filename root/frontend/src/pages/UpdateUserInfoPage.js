@@ -15,6 +15,8 @@ function UpdateUserInfoPage() {
 
     const [newReportingEmail, setNewReportingEmail] = useState()
     const [newCoveringEmail, setNewCoveringEmail] = useState()
+    const [newGrade, setNewGrade]= useState()
+    const [newMatricule, setMatricule]= useState()
     const [activeUpdateButton, setActiveUpdateButton] = useState(true)
     const [updateBtnLoading, setUpdateBtnLoading] = useState()
     const [deleteBtnLoading, setDeleteBtnLoading] = useState()
@@ -57,7 +59,16 @@ function UpdateUserInfoPage() {
         setActiveUpdateButton(false)
     }
 
+   const handlGradeUpdate = (e) => {
+    setNewGrade(e.target.value)
+    setActiveUpdateButton(false)
+   }
 
+
+ const handleMatriculeUpdate = (e) => {
+    setNewMatricule(e.target.value)
+    setActiveUpdateButton(false)
+ }
     const validateAndSubmitUpdateData = (e) => {
         e.preventDefault()
         setUpdateBtnLoading("loading")
@@ -72,11 +83,26 @@ function UpdateUserInfoPage() {
                 setUpdateBtnLoading("")
                 return toast.error("Invalid covering email!")
             }
+            
+            if(newGrade && !validateGrade(newGrade)){
+                setUpdateBtnLoading("")
+                return toast.error("Invalid grade")
+            }
+
+            if(newMatricule && !validateEmail(newMatricule)){
+                setUpdateBtnLoading("")
+                return toast.error("Invalid matricule!")
+            }
+
+
+
             setIsLoading(true)
             const updateData = {
                 userEmail: currentEditUser.email,
                 newReportingEmail: newReportingEmail,
-                newCoveringEmail: newCoveringEmail
+                newCoveringEmail: newCoveringEmail,
+                newGrade: newGrade,
+                newMatricule: newMatricule
             }
     
             axios
@@ -88,7 +114,8 @@ function UpdateUserInfoPage() {
                 toast.success("Update successful")
                 navigate('/user-management')
             })
-            .catch(err => {
+            //la fonction qui arrête le chargement de l'interface lorsqu'il y a un problème dans le backend
+           .catch(err => {
                 setIsLoading(false)
                 console.log(err)
                 toast.warning(`failed to update user info`)
@@ -119,6 +146,28 @@ function UpdateUserInfoPage() {
                     className="input input-bordered input-primary"
                     style={{ width:"250px" }}   
                     value={currentEditUser.email}/>
+            </div>
+
+
+            <div className="">
+                <label htmlFor="matricule" className="text-sm font-weight-900 -ml-1 label">Matricule</label>
+                <input 
+                    id="matricule" 
+                    type="text" 
+                    disabled 
+                    className="input input-bordered input-primary"
+                    style={{ width:"250px" }}   
+                    value={currentEditUser.matricule}/>
+            </div>
+            <div className="">
+                <label htmlFor="grade" className="text-sm font-weight-900 -ml-1 label">Grade</label>
+                <input 
+                    id="grade" 
+                    type="text" 
+                    disabled 
+                    className="input input-bordered input-primary"
+                    style={{ width:"250px" }}   
+                    value={currentEditUser.grade}/>
             </div>
             <div className="">
                 <label htmlFor="RO-email" className="text-sm font-weight-900 -ml-1 label">RO email</label>

@@ -13,15 +13,15 @@ function ApproveLeavePage() {
   const activeTabSelection = (activeTab) => {
     switch (activeTab) {
         case "Pending":
-        case "Home 主页": //"Home 主页" is the default choice when page loads; 
+        case "Home ": //"Home " is the default choice when page loads; 
             return (     // this will set pending tab as default for approve leave page
             <> 
-              <h1 className='text-xl my-6 text-center'>Pending for Approval</h1>
+              <h1 className=' text-xl mb-6 text-center  text-rose-500 '>Pending for Approval</h1>
               <Table headerType="approval"/>
             </>)
         case "Approved":
             return (<>
-              <h1 className='text-xl mb-6 text-center'>Approval History</h1>
+              <h1 className='text-xl mb-6 text-center  text-rose-500'>Approval History</h1>
               <Table headerType="approvalHistory"/>
             </>)
         default:

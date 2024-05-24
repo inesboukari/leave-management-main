@@ -5,7 +5,7 @@ import {useMainContext} from '../../hooks/useMainContext'
 
 function Tab() {/*Ce composant React, appelé Tab, est utilisé pour afficher des onglets de navigation basés sur l'URL de la page*/
     const {activeTab, setActiveTab} = useMainContext()
-    const homePageTabs = ["Home 主页", "Entitlement 年额", "History 历史"]/*tableau*/
+    const homePageTabs = ["Home ", "Entitlement ", "History "]/*tableau*/
     const approvalPageTabs = ["Pending", "Approved"]/*tableau*/
     const location = useLocation()/*est utilisé pour obtenir l'URL de la page actuelle.*/
 
@@ -26,7 +26,7 @@ function Tab() {/*Ce composant React, appelé Tab, est utilisé pour afficher de
                 </div>)
             case "/approve-leave":
                 return (    
-                    <div className="tabs">
+                   <div className="tabs">
                         {approvalPageTabs.map(tab => <Link 
                             to='' 
                             key={tab} 
@@ -34,6 +34,17 @@ function Tab() {/*Ce composant React, appelé Tab, est utilisé pour afficher de
                             className={activeTab === tab ? 'tab tab-lifted tab-active text-lg' : 'tab tab-lifted text-lg'} 
                             onClick={handleActiveTabClick}>{tab}</Link> )}
                     </div>)
+            
+                          case "/approve-attestation":
+                              return (    
+                                 <div className="tabs">
+                                      {approvalPageTabs.map(tab => <Link 
+                                          to='' 
+                                          key={tab} 
+                                          id={tab} 
+                                          className={activeTab === tab ? 'tab tab-lifted tab-active text-lg' : 'tab tab-lifted text-lg'} 
+                                          onClick={handleActiveTabClick}>{tab}</Link> )}
+                                  </div>)
             default:
                 console.log("tab not found!")
                 break;

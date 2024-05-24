@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
+/*Ce schéma définit la structure des documents dans la collection MongoDB qui stocke l'historique des demandes de congé*/ 
 
 const leaveHistorySchema = new Schema({
     leaveType: {
@@ -15,12 +16,13 @@ const leaveHistorySchema = new Schema({
         type: String,
         required: true
     },
-    startDateUnix:{
+    startDate:{
         type: String,
         required: true
     },
-    endDateUnix:{
-        type: String
+    endDate:{
+        type: String,
+        required:true
     },
     timestamp:{
         type: Date,
@@ -59,7 +61,8 @@ const leaveHistorySchema = new Schema({
         required: true
     },
     year: {
-        type: Number
+        type: Number,
+        required:true
     }
 })
 

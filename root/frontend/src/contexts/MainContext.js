@@ -6,13 +6,12 @@ import openSocket from 'socket.io-client'/* indique que le développeur prévoit
 export const MainContext = createContext()/*pour utiliser d'autre partie d'app*/
 
 export const MainContextProvider = ({ children }) => {/*le composant MainContextProvider en tant que composant fonctionnel. Il reçoit les children en tant que prop */
-  const [activeTab, setActiveTab] = useState("Home 主页") 
+  const [activeTab, setActiveTab] = useState("Home") 
   const [currentUser, setCurrentUser] = useState()
   const [userList, setUserList] = useState([])
-  const [teamCalendar, setTeamCalendar] = useState([])
   const [isAdmin, setIsAdmin] = useState()
 
-  const [currentLeaveSelection, setCurrentLeaveSelection] = useState("Annual Leave 年假")
+  const [currentLeaveSelection, setCurrentLeaveSelection] = useState("Annual Leave ")
   const [currentEditUser, setCurrentEditUser] = useState()
   const [sessionToken, setSessionToken] = useState(() => {
     let token =  sessionStorage.getItem('leaveMgtToken')
@@ -21,9 +20,6 @@ export const MainContextProvider = ({ children }) => {/*le composant MainContext
   })
 
   const [authState, setAuthState] = useState(false) /*useState=etat*/;
-
-  const [currentWorkdaySelection, setCurrentWorkdaySelection] = useState([]) /*État utilisé pour stocker la sélection  des jours ouvrables */
-  const [currentHolidaySelection, setCurrentHolidaySelection] = useState([])
 
   const [currentLeaveEntitlement, setCurrentLeaveEntitlement] = useState()/* État utilisé pour stocker les droits actuels aux congés*/
 
@@ -41,37 +37,6 @@ export const MainContextProvider = ({ children }) => {/*le composant MainContext
       })
   }
 
-  const fetchTeamCalendar = async () => { /*Fonction utilisée pour récupérer le calendrier de l'équipe à partir du backend*/
-    axios
-      .get(`${process.env.REACT_APP_BACKENDURL}/user/getTeamCalendar`)
-      .then(resp =>{ 
-        console.log("fetchTeamCalendar: ", resp.data)
-        setTeamCalendar(resp.data)
-        
-        // opening connection here because socket function requires team calendar to work 
-        isFirstRender.current && openSocketConnection(resp.data)
-        isFirstRender.current = false // prevent opening socket twice
-        // console.log(resp)
-      })
-      .catch(err => {
-        console.log("err: ", err)
-        toast.warning("failed to retrieve team calendar")
-      })
-  }
-
-  const fetchWorkDay = async () => {/*Fonction utilisée pour récupérer les jours ouvrables à partir du backend*/
-    axios
-      .get(`${process.env.REACT_APP_BACKENDURL}/admin/get-work-day`)
-      .then(resp =>{ 
-        // console.log("fetchWorkDay: ", resp.data)
-        setCurrentWorkdaySelection(resp.data.workday)
-        setCurrentHolidaySelection(resp.data.holiday)
-      })
-      .catch(err => {
-        console.log("err: ", err)
-        toast.warning("failed to retrieve work day data")
-      })
-  }
 
   const fetchCurrentUserInfo = async (currentUser) =>{/*fonction  utilisée pour récupérer les informations de l'utilisateur actuellement connecté à partir du backend*/
       console.log("fetchCurrentUserInfo triggered")
@@ -133,7 +98,6 @@ export const MainContextProvider = ({ children }) => {/*le composant MainContext
           const deletedRecord = data.calendarRecord
           console.log("deletedRecord: ", deletedRecord)
           console.log("teamCalendar: ", teamCalendar)
-
           const deletedCalendarRecord = teamCalendar.filter(record => 
                                                               (record.startDateUnix === deletedRecord.startDateUnix &&
                                                               record.endDateUnix === deletedRecord.endDateUnix &&
@@ -161,8 +125,6 @@ export const MainContextProvider = ({ children }) => {/*le composant MainContext
 
   useEffect(()=>{/* le hook useEffect de React pour effectuer plusieurs opérations lorsqu'un composant est monté ou mis à jour*/
     fetchUserList()
-    fetchTeamCalendar()
-    fetchWorkDay()
     fetchLeaveEntitlement()
     validateSession()
 
@@ -182,7 +144,6 @@ export const MainContextProvider = ({ children }) => {/*le composant MainContext
       currentLeaveEntitlement,//: Droits actuels aux congés.
       isAdmin,// Indique si l'utilisateur est un administrateur
       sessionToken,
-      teamCalendar,
       userList,
       currentWorkdaySelection,
       //Fonctions utiles à utiliser dans les composants enfants.

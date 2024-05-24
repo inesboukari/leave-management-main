@@ -1,6 +1,6 @@
 // Import necessary libraries
 const mongoose = require('mongoose');
-const LeaveHistory = require('../models/LeaveHistory'); // Assuming your model file is in a 'models' directory
+const LeaveHistory = require('/models/LeaveHistory'); // Assuming your model file is in a 'models' directory
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/leave_management', {

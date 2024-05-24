@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.x{
+    color:deeppink;
+}
+.y{
+    color:deeppink;
+}
+.z{
+    color:deeppink
+}
+.t{
+    color:cornflowerblue
+}
+.taraji{
+    color:deeppink
+}
+.p{
+    color:deeppink
+}
+.ho{
+    color:blueviolet;
+}
+.m{
+    color: deeppink;
+}

@@ -61,21 +61,23 @@ function LoginPage() {
 
         return (
         <div>
+             <div className="bg-rose-100 h-screen">
             <div className="flex flex-col w-full border-opacity-50">
                 <div className='grid place-items-center mt-20 mb-12'>
-                    <p className='text-slate-600 text-5xl'>LEAVE <span className="text-sky-500">PLANS</span> </p>
-                    <p className='text-slate-600 text-4xl'>休 <span className="text-sky-500">划</span> </p>
+                    <p className='text-slate-600 text-5xl y'>LEAVE <span className="x">PLANS</span> </p>
+                    <p className='text-slate-600 text-4xl'><span className="text-sky-500"></span> </p>
                 </div>
                 <form className="grid h-58 card rounded-box place-items-center my-1" onSubmit={validateFormAndSignIn}>
                     <div className="form-control w-full max-w-xs">
-                        <input type="text" placeholder="Email 邮箱" className="input input-bordered w-full max-w-xs" onChange={(event) => setUserEmail(event.target.value)}/>
-                        <input type="password" placeholder="Password 密码" className="input input-bordered w-full max-w-xs my-4" onChange={(event) => setUserPassword(event.target.value)}/>
+                        <input type="text" placeholder="Email " className="input input-bordered w-full max-w-xs" onChange={(event) => setUserEmail(event.target.value)}/>
+                        <input type="password" placeholder="Password" className="input input-bordered w-full max-w-xs my-4" onChange={(event) => setUserPassword(event.target.value)}/>
                     </div>
-                    <button type='submit' className={`btn btn-wide bg-black my-8 ${loginBtnLoading}`}>LOGIN 登陆</button>
+                    <button type='submit' className={`btn bg-rose-300 text-white text-center text-base font-semibold shadow-md rounded-lg mt-4" ${loginBtnLoading}`}>LOGIN </button>
                     <Link to="/change-password">
-                        <span className='underline text-slate-400'>Forgot password / 忘了密码</span>
+                        <span className='underline text-slate-600'>Forgot password / </span>
                     </Link>
                 </form>
+            </div>
             </div>
         </div>
         )

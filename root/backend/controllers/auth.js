@@ -3,11 +3,13 @@ const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 
-const sendgridMail = require('@sendgrid/mail')
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');/*Nous utilisons Nodemailer pour envoyer l'e-mail via SMTP. */
 
 // generate jwt token
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7d' })
+    return jwt.sign({ id }, 'leave', { expiresIn: '7d' })
 }
 
 exports.getHome = (req, res, next) => {
@@ -148,32 +150,54 @@ exports.postChangePassword = (req, res, next) => {
                 return user.save()
             })
             .then(result => {
-                //     sendgridMail.setApiKey(process.env.SENDGRID_API_KEY)
-                //     const msg = {
-                //     to: email, // Change to your recipient
-                //     from: 'mfachengdu@gmail.com', // Change to your verified sender
-                //     subject: 'Password Reset',
-                //     html: `
-                //         <div>
-                //             <p>You requested to reset your password. </p> 
-                //             <p> Click this <a href="${process.env.FRONTENDURL}/set-new-password/${token}"> link </a> to set a new password </p>
-                //         </div>
-                //         <div>
-                //             <p>您要求重设密码。</p> 
-                //             <p>点击<a href="${process.env.FRONTENDURL}/set-new-password/${token}"> 此链接 </a>设置新密码</p>
-                //         </div>
-                //     `
-                //     }
-                //     sendgridMail
-                //         .send(msg)
-                //         .then(() => {
-                //             console.log('reset password email sent')
-                //             return res.status(200).send("reset password email sent")
-                //         })
-                //         .catch((error) => {
-                //             console.error("sendgrid error: ", error)
-                //             return res.status(488).send("sendgrid error: ", error)
-                //         })
+              /*
+              envoyer email avec farebase
+              // Initialisation de Firebase Admin
+admin.initializeApp();
+
+// Configuration du transporteur SMTP
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'your-email@gmail.com',
+        pass: 'your-email-password'
+    }
+});
+
+exports.sendResetPasswordEmail = functions.firestore.document('resetPasswordRequests/{requestId}')
+    .onCreate((snapshot, context) => {
+        const data = snapshot.data();
+        const email = data.email;
+        const token = data.token;
+
+        const mailOptions = {
+            from: 'your-email@gmail.com',
+            to: email,
+            subject: 'Password Reset',
+            html: `
+                <div>
+                    <p>You requested to reset your password. </p> 
+                    <p> Click this <a href="${process.env.FRONTENDURL}/set-new-password/${token}"> link </a> to set a new password </p>
+                </div>
+                <div>
+                    <p></p> 
+                    <p><a href="${process.env.FRONTENDURL}/set-new-password/${token}"> </a></p>
+                </div>
+            `
+        };
+
+        return transporter.sendMail(mailOptions)
+            .then(() => {
+                console.log('reset password email sent');
+                return null;
+            })
+            .catch((error) => {
+                console.error("Error sending reset password email: ", error);
+                throw new Error("Error sending reset password email");
+            });
+    });
+           
+              */
                 return res.status(200).send("reset password email sent")
             })
             .catch(err => console.log(err))

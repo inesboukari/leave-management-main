@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import Select from '../components/layout/Select'
 import ReactDatePicker from 'react-datepicker';
@@ -31,14 +32,14 @@ function ApplyLeavePage() {
     const [numOfDaysApplied, setNumOfDaysApplied] = useState()
     const [currentUserAppliedDates] = useState(
         // filters non-cancelled, non-rejected leave dates already applied by user
-        currentUser.leaveHistory?.filter(entry => entry.status === "pending" || entry.status === "approved")?.map(entry => +(entry.startDateUnix)))
+       currentUser.leaveHistory?.filter(entry => entry.status === "pending" || entry.status === "approved")?.map(entry => +(entry.startDateUnix)))
     const [applyBtnLoading, setApplyBtnLoading] = useState("")
 
     const userSelectedLeave = currentUser?.leave?.find((leaveType) => leaveType.name === currentLeaveSelection)
     console.log("userSelectedLeave: ", userSelectedLeave)
 
     const numOfSelectedLeave = // use .entitlemen if leave type is carry forward, else, fetch from leaveEntitlement
-        (userSelectedLeave?.name === `Annual Leave 年额带过 (${currentYear-1})`) ? userSelectedLeave?.entitlement : currentLeaveEntitlement.find(leave => leave.name === userSelectedLeave?.name)?.entitlement - userSelectedLeave?.pending - userSelectedLeave?.used // refers to how many days a user is entitled for selected leave type
+        (userSelectedLeave?.name === `Annual Leave (${currentYear-1})`) ? userSelectedLeave?.entitlement : currentLeaveEntitlement.find(leave => leave.name === userSelectedLeave?.name)?.entitlement - userSelectedLeave?.pending - userSelectedLeave?.used // refers to how many days a user is entitled for selected leave type
     
     const validateAndSubmitLeaveApplication = (e) => {
         const url = `${process.env.REACT_APP_BACKENDURL}/user/applyLeave`
@@ -47,30 +48,30 @@ function ApplyLeavePage() {
         
         if(!currentLeaveSelection){
             setApplyBtnLoading("")
-            return toast.error("leave type not selected / 未选择休假类型")
+            return toast.error("leave type not selected /")
         }
         if(currentUserAppliedDates.includes(startDate)){
             setApplyBtnLoading("")
-            return toast.error("You have already applied leave on this day / 您已经请了这一天的假期！")
+            return toast.error("You have already applied leave on this day / ")
         }
         if(startDate === undefined || endDate === undefined){
             setApplyBtnLoading("")
-            return toast.error("start and end date must be selected / 必填开始和结束日期")
+            return toast.error("start and end date must be selected /")
         }
         if(!startDateRadioSelection){
             setApplyBtnLoading("")
-            return toast.error("Please select AM, PM Leave or Full Day / 必填 AM, PM Leave or Full Day")
+            return toast.error("Please select AM, PM Leave or Full Day / AM, PM Leave or Full Day")
         }
         // user must have enough leave 
         if(numOfDaysApplied > numOfSelectedLeave){
             setApplyBtnLoading("")
-            return toast.error("Insufficient leave / 不够假")
+            return toast.error("Insufficient leave /")
         }
         if(!checkBoxStatus){
             setApplyBtnLoading("")
-            return toast.error("Checkbox not checked! / 未选复选框")
+            return toast.error("Checkbox not checked! / ")
         }
-        
+    };
         // loads loading screen
         setIsLoading(true)
 
@@ -99,19 +100,21 @@ function ApplyLeavePage() {
                 if(resp.status === 200) {
                     // call user API to get most updated info
                     fetchCurrentUserInfo(currentUser)
-                    setCurrentLeaveSelection("Annual Leave 年假")
+                    setCurrentLeaveSelection("Annual Leave ")
                     toast.success("Leave application successful!")
                     navigate('/')
                 }
             })
-            .catch(err => {
+            //la fonction qui arrête l'affichage de l'interface lorsque le backend rencontre un problème
+    
+           .catch(err => {
                 if (err.response.status === 488){
                     setIsLoading(false)
                     toast.error("sendgrid email limit exceeded!")
                 }
                 else{
                     setIsLoading(false)
-                    toast.warning("failed to apply leave / 申请失败")
+                    toast.warning("failed to apply leave /")
                 }
                 console.log(err)
             })
@@ -192,83 +195,92 @@ function ApplyLeavePage() {
         if(numOfSelectedLeave === 0){
             return (<>
                 <p className='mt-4 text-sm'>You have 0 days of: {currentLeaveSelection}</p>
-                <p className='text-sm'>您已用完: {currentLeaveSelection}</p>
+                <p className='text-sm'>: {currentLeaveSelection}</p>
             </>)    
         }
         if(numOfSelectedLeave){
             return (<>
                 <p className='mt-4 text-sm'>You have {numOfSelectedLeave} days of: {currentLeaveSelection}</p>
-                <p className='text-sm'>您有{numOfSelectedLeave}天的: {currentLeaveSelection}</p>
+                <p className='text-sm'>{numOfSelectedLeave}: {currentLeaveSelection}</p>
             </>)
         }
-
+    
     }
 
   return (
     <>
-    <form className="w-full flex flex-col justify-start items-center" onSubmit={validateAndSubmitLeaveApplication}>
+    <h1>Welcome</h1>
+     <form className="w-full flex flex-col justify-start items-center" onSubmit={validateAndSubmitLeaveApplication}> 
+
         <div className='grid place-items-center mt-6'>
             <p className='text-slate-600 text-3xl'>Apply <span className="text-sky-500">Leave</span> </p>
-            <p className='text-slate-600 text-3xl'>请<span className="text-sky-500">假</span> </p>
+            <p className='text-slate-600 text-3xl'><span className="text-sky-500"></span> </p>
         </div>
 
         <div className="my-1 ml-8">
-            <label htmlFor="remarks" className="text-lg font-weight-900 -ml-1 label">Leave Type</label>
-            <Select options={leaveOptions}/>
-            {leaveTypeMessage()}
+            <label htmlFor="typeleave" className="text-lg font-weight-900 -ml-1 label">Leave Type</label>
+             <Select options={leaveOptions}/> 
+             {leaveTypeMessage()} 
         </div>
 
         <div className='flex ml-20'>
             <div className=''>
                 <label htmlFor="startDate" className="text-sm">Start Date</label>
-                <ReactDatePicker
+                 <ReactDatePicker
                     dateFormat='dd MMM yyyy'
                     className='border-[1px] border-secondary w-28 h-10 rounded-sm' 
                     selected={startDate} 
                     minDate={moment().year(currentDate.getFullYear() - 1).dayOfYear(1)._d}
                     onChange={(date) => handleStartDateSelection(date)} 
-                />
+                /> 
             </div>
             <div className='-ml-8'>
                 <label htmlFor="endDate" className="text-sm">End Date</label>
-                <ReactDatePicker 
+                 <ReactDatePicker 
                     dateFormat='dd MMM yyyy' 
                     className='border-[1px] border-secondary w-28 h-10 rounded-sm' 
                     selected={(startDateRadioSelection === "Full Day") ? endDate : startDate} 
                     readOnly= {startDateRadioSelection !== "Full Day"}
                     minDate={startDate}
-                    onChange={(date) => handleEndDateSelection(date)} />
+                    onChange={(date) => handleEndDateSelection(date)} /> 
             </div>
         </div>
             
-        <div className='mt-4 mr-8 flex gap-2' onChange={(e) => handleRadioSelection(e)}>
-            <input type="radio" id="fullDay" name="dateRangeRadio" className="radio-sm required" value="Full Day" defaultChecked/> Full Day
+        <div className='mt-4 mr-8 flex gap-2' onChange={(e) => handleRadioSelection(e)}> 
+         <input type="radio" id="fullDay" name="dateRangeRadio" className="radio-sm required" value="Full Day" defaultChecked/> Full Day 
             <input type="radio" id="AM" name="dateRangeRadio" className="radio-sm required" value="AM"/> AM
             <input type="radio" id="PM" name="dateRangeRadio" className="radio-sm required" value="PM"/> PM
         </div>
-        {numOfDaysApplied >= 0 &&
+        { {numOfDaysApplied >= 0 &&
         <>
-            <p className='text-sm mt-3'>{`You have selected / 已选： ${numOfDaysApplied} day(s) of ${currentLeaveSelection}`}</p>
-            {(numOfDaysApplied <= numOfSelectedLeave) && <p className='text-sm'>Balance of / 剩: {numOfSelectedLeave - numOfDaysApplied} day(s) of {currentLeaveSelection}</p>}
-            {(numOfDaysApplied > numOfSelectedLeave) && <p className='text-sm text-red-500'>Insufficient leave / 不够假!</p>}
+            <p className='text-sm mt-3'>{`You have selected ： ${numOfDaysApplied} day(s) of ${currentLeaveSelection}`}</p>
+            {(numOfDaysApplied <= numOfSelectedLeave) && <p className='text-sm'>Balance of / : {numOfSelectedLeave - numOfDaysApplied} day(s) of {currentLeaveSelection}</p>}
+            {(numOfDaysApplied > numOfSelectedLeave) && <p className='text-sm text-red-500'>Insufficient leave / </p>}
         </>
-        }
+        }}
 
 
             <div className="my-1 mr-6">
                 <label htmlFor="remarks" className="text-lg font-weight-900 label">Remarks</label>
-                <textarea 
+                { <textarea 
                     id="remarks" 
                     className="py-2 px-4 placeholder-gray-400 rounded-lg border-2" 
-                    placeholder="Reason (optional) / 请假原因(选填)" 
+                    placeholder="Reason (optional) " 
                     name="comment" 
                     rows="2"
                     onChange={(e) => setRemarks(e.target.value)}
+                    ></textarea> }
+                     <textarea 
+                    id="remarks" 
+                    className="py-2 px-4 placeholder-gray-400 rounded-lg border-2" 
+                    placeholder="Reason (optional) " 
+                    name="comment" 
+                    rows="2" 
                     ></textarea>
             </div>
-            {/* <div className='ml-12'>
-                <label htmlFor="upload" className="text-lg font-weight-900 label -ml-1">Supporting documents / 证明</label>
-                <p className='text-xs'> MC is compulsory / 病假单必上传</p>
+            {<div className='ml-12'>
+                <label htmlFor="upload" className="text-lg font-weight-900 label -ml-1">Supporting documents /</label>
+                <p className='text-xs'> MC is compulsory / </p>
                 <input 
                     id='file'
                     name="file"
@@ -276,46 +288,64 @@ function ApplyLeavePage() {
                     className="text-center text-sm mt-2"
                     onChange={onFileChange}
                 />
-            </div> */}
+            </div> }
             <div className="my-1">
-                <label htmlFor="reportingEmail" className="text-lg font-weight-900 -ml-1 label">RO email 主管邮件</label>
-                <input 
+                <label htmlFor="reportingEmail" className="text-lg font-weight-900 -ml-1 label">RO email </label>
+                 <input 
                     id="reportingEmail" 
                     type="text" 
                     disabled 
                     className="input input-bordered input-primary w-full max-w-xs" 
                     style={{ width:"250px" }} 
-                    value={currentUser.reportingEmail}/>
+                    value={currentUser.reportingEmail}/> 
+                     <input 
+                    id="reportingEmail" 
+                    type="text" 
+                    disabled 
+                    className="input input-bordered input-primary w-full max-w-xs" 
+                    style={{ width:"250px" }} 
+                    />
             </div>
             <div className="my-1">
-                <label htmlFor="coveringEmail" className="text-lg font-weight-900 -ml-1 label">CO email 代办邮件</label>
+                <label htmlFor="coveringEmail" className="text-lg font-weight-900 -ml-1 label">CO email</label>
                 <input 
                     id="coveringEmail" 
                     type="text" 
                     disabled 
                     className="input input-bordered input-primary w-full max-w-xs"
                     style={{ width:"250px" }} 
-                    value={currentUser.coveringEmail}/>
+                    value={currentUser.coveringEmail}/> 
+                     <input 
+                    id="coveringEmail" 
+                    type="text" 
+                    disabled 
+                    className="input input-bordered input-primary w-full max-w-xs"
+                    style={{ width:"250px" }} 
+                    />
             </div>
             <div className="flex items-center">
                 <label className="cursor-pointer label -ml-1">
-                    <input type="checkbox" checked={checkBoxStatus} onClick={() => setCheckBoxStatus(!checkBoxStatus)} className="checkbox checkbox-primary mr-2" />
+                     <input type="checkbox" checked={checkBoxStatus} onClick={() => setCheckBoxStatus(!checkBoxStatus)} className="checkbox checkbox-primary mr-2" /> 
+                    <input type="checkbox"  className="checkbox checkbox-primary mr-2" />
+
                 </label>
                 <div>   
-                    <p className="label-text whitespace-pre-line mt-4 mb-2">{`I declare that my covering officer has agreed\nto cover my duties during my leave period.`}</p>
-                    <p className="label-text">代办已答应在我休假的期间代班。</p>
+                     <p className="label-text whitespace-pre-line mt-4 mb-2">{`I declare that my covering officer has agreed\nto cover my duties during my leave period.`}</p> 
+                    <p className="label-text">。</p>
                 </div>
 
             </div>
             <button type="submit" className={`btn text-white mt-4 px-28 text-center text-base font-semibold shadow-md rounded-lg mt-4 ${applyBtnLoading}`}>
-                Apply / 申请
-            </button>
+                Apply / 
+            </button> 
+        
     </form>
-    {isLoading && <Loading/>}
+     {isLoading && <Loading/>} 
     </>
+                
+);
 
-  )
-}
+export default ApplyLeavePage
+
 /*C'est une mise en page bien organisée qui facilite la soumission des demandes de congé par les utilisateurs, 
 tout en fournissant toutes les informations nécessaires pour une demande de congé réussie. */
-export default ApplyLeavePage

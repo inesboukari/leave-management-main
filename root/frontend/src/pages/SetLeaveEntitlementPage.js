@@ -67,6 +67,7 @@ function SetLeaveEntitlementPage() {
                         fetchLeaveEntitlement()
                         return toast.success("Leave Entitlement Updated")
                 })
+                //arrete la chargement de l'interface
                 .catch(err => {
                     setIsLoading(false)
                     setUpdateBtnLoading(false)

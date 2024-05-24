@@ -19,16 +19,15 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
 
     // table headers
     /*Ces variables contiennent les en-têtes de différentes tables qui peuvent être utilisées dans votre application */
-    const requestTableHeader = ["ID", "Leave Type 假性", "Period 时间段", "calendar days 工作日数", "Submitted on 提交日期", "Quota used 使用额", "Status 状态", "Action 更改" ]
-    const historyTableHeader = ["ID", "Leave Type 假性", "Period 时间段", "calendar days 工作日数", "Submitted on 提交日期", "Quota used 使用额", "Status 状态", "Action 更改" ]
+    const requestTableHeader = ["ID", "Leave Type", "Period ", "calendar days ", "Submitted on ", "Quota used ", "Status ", "Action " ]
+    const historyTableHeader = ["ID", "Leave Type ", "Period ", "calendar days ", "Submitted on", "Quota used ", "Status ", "Action" ]
     const approvalTableHeader = ["Staff", "Leave Type", "Period", "calendar days", "Submitted on", "Quota used", "Status", "Action" ]
     const approvalHistoryTableHeader = ["Staff", "Leave Type", "Period", "calendar days", "Submitted on", "Quota used", "Status" ]
-    const entitlementTableHeader = ["Leave Type 假性", `Entitlement 年额 (${currentYear})`, "Pending 待批准", "Quota used 已用", "Available 可用","Note 备注"]
+    const entitlementTableHeader = ["Leave Type ", `Entitlement (${currentYear})`, "Pending ", "Quota used ", "Available ","Note"]
     const changeLogHeader = ["Time","Operation Type", "Changes made", "Changed by"]
     const userManagementTableHeader = ["Name","Email","Created on","Last updated on","Type","RO email","CO email","Action"]
     const deleteLeaveTableHeader = ["Name", "Entitlement", "Added By", "Added On", "Action"]
-    const dashboardTableHeader = ["Name","Email","Annual Leave left"]
-    
+    const approvalAttesatonTableHeader = ["name", "email", "grade", "matricule", "attestationTravail" ,"attestationSalaire"]
     const handleEditClick = (event) => {/* est utilisée pour gérer le clic sur un bouton ou un élément qui déclenche l'édition d'un utilisateur dans votre application*/
         // identify user's id, send user's data to update user info form
         // console.log(event.target.id)
@@ -47,58 +46,10 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
             console.log(err)
             toast.warning(`failed to get user info by email`)
         })
-    }
+    };
 
-    const handleCancelClick = (e) => {/*Cette fonction est appelée lorsqu'un utilisateur clique sur un bouton pour annuler un congé.*/
-        e.preventDefault()
-
-        const targetLeaveHistory = currentUser.leaveHistory.filter(leaveRecord => leaveRecord._id === e.target.id)
-
-        let windowContent;
-        if(activeTab === "History 历史"){/*  récupère l'historique du congé à annuler*/
-            windowContent = `
-                Your RO will be notified, cancel approved leave? 
-                您的主管得批准这取消操作，确认取消已用的休假？
-                `
-        }
-        else {
-            windowContent = `
-            Cancel leave?
-            确认取消以上的休假？ `
-        }
         
-        if(window.confirm(`
-        leave id: ${e.target.id}
-        ${windowContent}`
-        )){
-            setIsLoading(true)
-            const url = `${process.env.REACT_APP_BACKENDURL}/user/cancelLeave`
-            axios
-                .post(url, {userId: currentUser._id, userEmail: currentUser.email, targetLeaveHistory: targetLeaveHistory, reportingEmail: currentUser.reportingEmail})
-                .then(resp => {
-                    if(resp.status === 200){
-                        setIsLoading(false)
-                        fetchCurrentUserInfo(currentUser)
-                        // console.log(resp)
-                        return toast.success("Leave Cancelled / 休假请求已取消")
-                      }
-                })
-                .catch(err => {
-                    if(err.status === 400){
-                        return toast.warning("failed to cancel leave")
-                    }
-                    else if (err.response.status === 488){
-                        setIsLoading(false)
-                        return toast.error("sendgrid email limit exceeded!")
-                    }
-                    else{
-                        console.log(err)
-                        setIsLoading(false)
-                        return toast.error("failed to cancel leave / 取消休假请求失败")
-                    }
-                })
-        }
-    }
+
 
     const handleDeleteLeaveType = (e) => {/*Cette fonction est appelée lorsqu'un utilisateur clique sur un bouton pour supprimer un type de congé*/
         e.preventDefault()
@@ -196,7 +147,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                 return approvalHistoryTableHeader.map((headerName,index) => <th key={index}>{headerName}</th>)
             case "change-log":
                 return changeLogHeader.map((headerName,index) => <th key={index}>{headerName}</th>)
-            case "dashboard":
+           case "approve-attestation":
                 return dashboardTableHeader.map((headerName,index) => <th className='whitespace-pre-line' key={index}>{headerName}</th>)
             case "entitlement":
                 return entitlementTableHeader.map((headerName,index) => <th className='whitespace-pre-line' key={index}>{headerName}</th>)
@@ -208,6 +159,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                 return userManagementTableHeader.map((headerName,index) => <th key={index}>{headerName}</th>)
             case "delete-leave-type":
                 return deleteLeaveTableHeader.map((headerName,index) => <th key={index}>{headerName}</th>)
+        
             default:
                 console.log("invalid table header provided!")
                 break;
@@ -219,23 +171,23 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
         switch (status) {
             case "approved":
                 return <span className='badge badge-success py-3 text-white font-semibold'>{status.toUpperCase()}</span>
-            case "cancellation approved":
-                return <span className='badge badge-success py-5 text-white font-semibold whitespace-pre-line'>{"CANCELLATION\nAPPROVED"}</span>
+            {/*case "cancellation approved":
+                   return <span className='badge badge-success py-5 text-white font-semibold whitespace-pre-line'>{"CANCELLATION\nAPPROVED"}</span>*/}
             case "cancelled":
-                return <span className='badge badge-warning py-3 text-white font-semibold'>{status.toUpperCase()}</span>
+                      return <span className='badge badge-warning py-3 text-white font-semibold'>{status.toUpperCase()}</span>*/}
             case "pending":
-                return <span className='badge badge-info py-3 text-white font-semibold'>{status.toUpperCase()}</span>
-            case "pending cancellation":
-                return <span className='badge badge-info py-5 text-white font-semibold whitespace-pre-line'>{"PENDING\nCANCELLATION"}</span>
-            case "cancellation rejected":
-                return <span className='badge badge-error py-5 text-white font-semibold whitespace-pre-line'>{"cancellation\nrejected"}</span>
+                      return <span className='badge badge-info py-3 text-white font-semibold'>{status.toUpperCase()}</span>
+           {/* case "pending cancellation":
+              return <span className='badge badge-info py-5 text-white font-semibold whitespace-pre-line'>{"PENDING\nCANCELLATION"}</span>*/}
+            {/*case "cancellation rejected":
+                 return <span className='badge badge-error py-5 text-white font-semibold whitespace-pre-line'>{"cancellation\nrejected"}</span>*/}
             case "rejected":
                 return <span className='badge badge-error py-3 text-white font-semibold'>{status.toUpperCase()}</span>
             default:
                 console.log("invalid status header provided!")
                 break;
         }
-    }
+    
     
     const tableDataSelection = (headerType) => {/*est utilisée pour sélectionner et générer les données de tableau appropriées en fonction du type de tableau fourni en entrée*/
         switch (headerType) {
@@ -278,8 +230,8 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                             entry.status === "approved" || 
                             entry.status === "rejected" || 
                             entry.status === "cancellation approved" ||
-                            entry.status === "cancellation rejected")
-                    .sort((a,b)=> b.startDateUnix - a.startDateUnix)
+                    entry.status === "cancellation rejected")
+                    .sort((a,b)=> b.startDate - a.startDate)
                     .map((subLeave,index) => 
                     <tr>
                         <td>{subLeave.staffEmail}</td>
@@ -292,8 +244,8 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                     </tr>
                 )
                 : <td>No approval leave history yet</td>
-            // case "change-log":
-            //     return changeLogData.map((list, index) => <tr key={index}>{list.map(listItem => <td>{listItem}</td>)}</tr>)
+            case "change-log":
+                 return changeLogData.map((list, index) => <tr key={index}>{list.map(listItem => <td>{listItem}</td>)}</tr>)
             case "dashboard":
                 return userList
                     .filter(entry => entry.isAdmin === "user")
@@ -302,7 +254,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         {/* fetch from global entitlement collection */}
-                        <td>{currentLeaveEntitlement.find(record => record.name === "Annual Leave 年假").entitlement - user.leave[0].used}</td> 
+                        <td>{currentLeaveEntitlement.find(record => record.name === "Annual Leave").entitlement - user.leave[0].used}</td> 
                     </tr>)
             case "entitlement":
                 const fetchLeaveEntitlement = (leaveName) => {
@@ -312,10 +264,10 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                 return currentUserLeave?.map((leave,index) => 
                     <tr key={index}>
                         <td>{leave.name}</td>
-                        <td>{(leave.name === `Annual Leave 年额带过 (${currentYear-1})`) ? leave.entitlement : fetchLeaveEntitlement(leave.name)}</td>
+                        <td>{(leave.name === `Annual Leave (${currentYear-1})`) ? leave.entitlement : fetchLeaveEntitlement(leave.name)}</td>
                         <td>{leave.pending}</td>
                         <td>{leave.used}</td>
-                        <td>{(leave.name === `Annual Leave 年额带过 (${currentYear-1})`) ? leave.entitlement : fetchLeaveEntitlement(leave.name) - leave.pending - leave.used}</td>
+                        <td>{(leave.name === `Annual Leave  (${currentYear-1})`) ? leave.entitlement : fetchLeaveEntitlement(leave.name) - leave.pending - leave.used}</td>
                         <td><InfoBubble info={leave.note}/></td>
                     </tr>)
             case "request":
@@ -340,15 +292,15 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                                         id={leave._id} 
                                         name={leave.leaveType}
                                         onClick={(e) => handleCancelClick(e)} 
-                                        className="btn btn-sm btn-error px-2 rounded-md text-white">cancel 取消
+                                        className="btn btn-sm btn-error px-2 rounded-md text-white">cancel 
                                     </button>
                                     : <></>
                                     }
                                 </td>
-                                {/* <td><button className='btn-error px-2 rounded-md text-white'>Cancel 取消</button></td> */}
+                                {/* <td><button className='btn-error px-2 rounded-md text-white'>Cancel</button></td> */}
                             </tr>
                         )
-                    : <td>No upcoming leave request / 暂时无请求</td>
+                    : <td>No upcoming leave request / </td>
             case "history":
                 return (currentUser?.leaveHistory?.filter(entry => entry.startDateUnix <= currentDateUnix).length) ?
                     currentUser.leaveHistory
@@ -371,7 +323,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                                         id={leave._id} 
                                         name={leave.leaveType}
                                         onClick={(e) => handleCancelClick(e)} 
-                                        className="btn btn-sm btn-error px-2 rounded-md text-white">cancel 取消
+                                        className="btn btn-sm btn-error px-2 rounded-md text-white">cancel
                                     </button>
                                     : <></>
                                     }
@@ -379,7 +331,7 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                                 </tr>
                         )
                 : 
-                <td>No leave history / 暂无历史</td>
+                <td>No leave history / </td>
             case "delete-leave-type":
                 console.log(currentLeaveEntitlement, userAddedLeaveType)
                 return (userAddedLeaveType) ?
@@ -420,6 +372,28 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
                                     </td>
                                 </tr>
                         ))
+                        case "approve-attestation":
+                            return userList.map((list, index) => 
+                                    (
+                                            <tr key={index}>
+                                                <td>{list.name}</td>
+                                                <td>{list.email}</td>
+                                                <td>{list.grade}</td>
+                                                <td>{list.matricule}</td>
+                                                <td>{list.attestationTravail}</td>
+                                                <td>{list.attestationSalaire}</td>
+                                    
+                                                <td>
+                                                    <Link to ="/attestation-form">
+                                                        <button id={list.email} className='btn btn-xs btn-neutral' onClick={handleEditClick}>
+                                                            edit
+                                                        </button>
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                    ))
+                                
+                    
             default:
                 console.log("invalid table header provided!")
                 break;
@@ -442,6 +416,6 @@ function Table({headerType}) {/*Cela montre que ce composant de table utilise
         {isLoading && <Loading/>}
     </div>
     )
-}
+};
 
-export default Table
+export default Table;

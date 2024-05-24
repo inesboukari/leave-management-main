@@ -29,7 +29,7 @@ function ChangePasswordPage() {
                 console.log(resp.message)
                 if(resp.status === 200) {
                     navigate('/login')
-                    return toast.success("Check your email for next steps! / 后续步骤请检查您的邮件！")
+                    return toast.success("Check your email for next steps! /")
                 }
             })
             .catch((err) => {
@@ -45,18 +45,21 @@ function ChangePasswordPage() {
     return (
     <div>
         <div className="flex flex-col w-full border-opacity-50">
+        <div className="bg-coral-100 h-screen">
+
             <div className='grid place-items-center mt-20 mb-8'>
-                <p className='text-slate-600 text-3xl'>RESET <span className="text-sky-500">PASSWORD</span> </p>
+                <p className=' text-sky-800 p'>RESET <span className="text-sky-800 p">PASSWORD</span> </p>
             </div>
             <form className="grid h-58 card rounded-box place-items-center my-1" onSubmit={validateAndSubmitData}>
                 <div className="form-control w-full max-w-xs">
-                    <input type="text" placeholder="Email 邮箱" className="input input-bordered w-full max-w-xs" onChange={(event) => setUserEmail(event.target.value)}/>
+                    <input type="text" placeholder="Email " className="input input-bordered w-full max-w-xs" onChange={(event) => setUserEmail(event.target.value)}/>
                 </div>
-                <button type='submit' className={`btn btn-wide bg-black my-12`}>Reset Password 重置密码</button>
+                <button type='submit' className={`btn bg-rose-200 text-white text-center text-base font-semibold shadow-md rounded-lg mt-4`}>Reset Password </button>
                 <Link to="/login">
-                    <span className='underline text-slate-400'> Login / 登陆</span>
+                    <span className='underline text-slate-600'> Login / </span>
                 </Link>
             </form>
+        </div>
         </div>
     </div>
     )

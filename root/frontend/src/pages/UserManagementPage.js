@@ -16,9 +16,9 @@ function UserManagementPage() {
                         <span className='text-[16px]'>Add New User</span>
                     </button>   
                 </Link>
-                {/* <Link to="/change-log">
+                {<Link to="/change-log">
                     <button className='btn bg-black rounded-md px-6 text-lg'>Change Log</button>
-                </Link> */}
+                </Link> }
             </div>
         </div>
         <Table headerType="user-management"/>

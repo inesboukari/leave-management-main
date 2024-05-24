@@ -26,11 +26,11 @@ function SetNewPasswordPage() {
             return toast.error("Fill in all blanks!")
 
         if (userPassword !== confirmPassword) {
-            return toast.error("Passwords don't match! / 密码不匹配！")
+            return toast.error("Passwords don't match! / ")
         }
 
         if (userPassword.length < 6) {
-            return toast.error("Password must be at least 6 characters / 密码必须至少6个字符")
+            return toast.error("Password must be at least 6 characters / ")
         }
         const formData = {
             // email: ,
@@ -52,17 +52,18 @@ function SetNewPasswordPage() {
     }
     
     return (
+        
     <div>
         <div className="flex flex-col w-full border-opacity-50">
             <div className='grid place-items-center mt-20 mb-8'>
                 <p className='text-slate-600 text-3xl'>SET NEW <span className="text-sky-500">PASSWORD</span> </p>
             </div>
-            <form className="grid h-58 card rounded-box place-items-center my-1" onSubmit={validateAndSubmitNewPassword}>
+           <form className="grid h-58 card rounded-box place-items-center my-1" onSubmit={validateAndSubmitNewPassword}>
                 <div className="form-control w-full max-w-xs">
-                    <input type="password" placeholder="New Password 新密码" className="input input-bordered w-full max-w-xs" onChange={(event) => setUserPassword(event.target.value)}/>
-                    <input type="password" placeholder="Confirm New Password 二次确认新密码" className="input input-bordered w-full max-w-xs mt-4" onChange={(event) => setConfirmPassword(event.target.value)}/>
-                </div>
-                <button type='submit' className={`btn btn-wide bg-black my-12`}>Update Password 更新密码</button>
+                    <input type="password" placeholder="New Password " className="input input-bordered w-full max-w-xs" onChange={(event) => setUserPassword(event.target.value)}/>
+                    <input type="password" placeholder="Confirm New Password " className="input input-bordered w-full max-w-xs mt-4" onChange={(event) => setConfirmPassword(event.target.value)}/>
+       </div>
+                <button type='submit' className={`btn btn-wide bg-black my-12`}>Update Password </button>
             </form>
         </div>
     </div>

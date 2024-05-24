@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/leave_management', {
 const sampleLeaves = [
   {
     name: 'john doe',
-    isAdmin: true,
+    isAdmin: 'admin',
     password: 'password',
     email: 'johndoe@example.com',
     createdOn: new Date().toISOString(),
@@ -32,7 +32,7 @@ const sampleLeaves = [
   },
   {
     name: 'User 2',
-    isAdmin: true,
+    isAdmin: 'admin',
     password: 'password',
     email: 'reporting@example.com',
     createdOn: new Date().toISOString(),
@@ -45,7 +45,7 @@ const sampleLeaves = [
   },
   {
     name: 'User 3',
-    isAdmin: true,
+    isAdmin: 'admin',
     password: 'password',
     email: 'covering@example.com',
     createdOn: new Date().toISOString(),
@@ -56,6 +56,8 @@ const sampleLeaves = [
     leaveHistory: {},
     staffLeave: {}
   }
+
+
 ];
 
 // Function to seed data

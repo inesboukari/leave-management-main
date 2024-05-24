@@ -15,6 +15,14 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    matricule: {
+        type: Number,
+        required: true
+    },
+    grade: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
